@@ -1,6 +1,6 @@
 include <gridfinity_modules.scad>
 
-part = 5;
+part = 7;
 
 if (part == 1) {
   socket_holder(4, [12,12,12,13,14,16,16,17,21,22], "METRIC");
@@ -19,6 +19,9 @@ else if (part == 5) {
 }
 else if (part == 6) {
   socket_holder(2, [12,12,12,12,12,12], "metric<7mm");
+}
+else if (part == 7) { // Pittsburgh Pro (Harbor Freight)
+  socket_holder(4, [12,12,12,12,13,14,16,17,18,20], "METRIC");
 }
 
 function inc(v, a=.6) = [for (i = v) i+a ];
