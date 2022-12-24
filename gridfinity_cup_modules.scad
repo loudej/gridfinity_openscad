@@ -1,4 +1,4 @@
-include <gridfinity_modules.scad>
+include <modules/gridfinity_modules.scad>
 
 // X dimension subdivisions
 default_chambers = 1;

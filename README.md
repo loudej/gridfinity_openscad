@@ -31,6 +31,7 @@ Some other models are also included and are also parametric.  Not all of these w
 * Socket holder
 * Gridfinity base for Flsun Q5
 * Silverware drawer
+* Drill holder (metric, standard and metric tap variations here, but easy to mix your own)
 
 [<img src="./Images/basic_cup_2x1x3.png">]()
 [<img src="./Images/divided_cup_2x1x3x5.png">]()
