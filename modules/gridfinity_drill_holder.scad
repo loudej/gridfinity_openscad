@@ -23,9 +23,8 @@ module drill_holder(num_x=1, back_widths=[], front_widths=[], name="", num_z=3,
     left_start = -20.75;
     corner_radius=3.7;
     label_thickness=0.5;
-    difference() {
-    union() {
-        if (show_holder) union() {
+    if (show_holder) difference() {
+      union() {
           grid_block(num_x, 1, num_z);
           // back row back support
           rotate([-back_support_angle,0,0])translate([left_start,back_y_offset-5,20])
@@ -43,65 +42,64 @@ module drill_holder(num_x=1, back_widths=[], front_widths=[], name="", num_z=3,
               cylinder(r=corner_radius,h=front_bump_height, $fa=1, $fs=.8);
           translate([left_start+corner_radius,left_start,19])
               cube([full_w-(corner_radius*2),15,front_bump_height]);
-        }
-
-        if (show_labels) {
-          // back row label
-          translate([left_start, -42, 0])
-          union() {
-            // labels is horizontally aligned with "back drills"
-            translate([side_margin, 0, 0])
-            labels(back_numerators, inc(back_widths,bit_extra_space),
-              text_size=text_size, text_font=text_font,
-              text_offset=[0,+text_size/4], halign="center", valign="baseline",
-              plate_size=[usable_w , label_height, label_thickness*2]);
-
-            translate([side_margin, 0, 0])
-            labels(back_denominators, inc(back_widths,bit_extra_space),
-              text_size=text_size, text_font=text_font,
-              text_offset=[0,-text_size/4], halign="center", valign="top",
-              plate_size=[usable_w , label_height, label_thickness*2]);
-
-            // plate is horizontally aligned with "back label window"
-            translate([back_label_side_margin, 0, 0]) 
-            cube([full_w - (back_label_side_margin * 2), label_height, label_thickness*2]);
-          }
-
-          // front row label
-          translate([left_start, -42 - label_height - 4, 0])
-          union() {
-            // labels is horizontally aligned with "front drills"
-            translate([side_margin, 0, 0])
-            labels(front_numerators, inc(front_widths,bit_extra_space),
-              text_size=text_size, text_offset=[0,+text_size/4], halign="center", valign="baseline",
-              plate_size=[usable_w , label_height, label_thickness*2]);
-
-            translate([side_margin, 0, 0])
-            labels(front_denominators, inc(front_widths,bit_extra_space),
-              text_size=text_size, text_offset=[0,-text_size/4], halign="center", valign="top",
-              plate_size=[usable_w , label_height, label_thickness*2]);
-
-            // plate is horizontally aligned with "front label window"
-            translate([label_side_margin, 0, 0]) 
-            cube([full_w - (label_side_margin * 2), label_height, label_thickness*2]);
-          }
-        }
+      }
+      // back drills
+      rotate([-back_support_angle,0,0])translate([left_start + side_margin,back_y_offset+1.5,7])
+        drills(inc(back_widths,bit_extra_space), usable_w);
+      // front drills
+      rotate([0,0,0])translate([left_start + side_margin ,-8,7])
+        drills(inc(front_widths,bit_extra_space), usable_w );
+      // back label window
+      rotate([-back_support_angle,0,0])translate([left_start + back_label_side_margin,back_margin-14.05,back_bump_height+5.6])
+          cube([full_w - (back_label_side_margin * 2),label_thickness,label_height]);
+      // front label window
+      translate([left_start + label_side_margin,left_start-.01,max(front_bump_height+5.5,11)])
+          cube([full_w - (label_side_margin * 2),label_thickness,label_height]);
+    //  translate([-18,-20,10])rotate([90,0,0])
+    //    linear_extrude(10)text(name);
+    // translate([-18,-18,22])cube([usable_w,42-6,50]);
     }
-    // back drills
-    rotate([-back_support_angle,0,0])translate([left_start + side_margin,back_y_offset+1.5,7])
-      drills(inc(back_widths,bit_extra_space), usable_w);
-    // front drills
-    rotate([0,0,0])translate([left_start + side_margin ,-8,7])
-      drills(inc(front_widths,bit_extra_space), usable_w );
-    // back label window
-    rotate([-back_support_angle,0,0])translate([left_start + back_label_side_margin,back_margin-14.05,back_bump_height+5.6])
-        cube([full_w - (back_label_side_margin * 2),label_thickness,label_height]);
-    // front label window
-    translate([left_start + label_side_margin,left_start-.01,max(front_bump_height+5.5,11)])
-        cube([full_w - (label_side_margin * 2),label_thickness,label_height]);
-  //  translate([-18,-20,10])rotate([90,0,0])
-  //    linear_extrude(10)text(name);
-   // translate([-18,-18,22])cube([usable_w,42-6,50]);
+
+    if (show_labels) {
+    // back row label
+    translate([left_start, -42, 0])
+    union() {
+      // labels is horizontally aligned with "back drills"
+      translate([side_margin, 0, 0])
+      labels(back_numerators, inc(back_widths,bit_extra_space),
+        text_size=text_size, text_font=text_font,
+        text_offset=[0,+text_size/4], halign="center", valign="baseline",
+        plate_size=[usable_w , label_height, label_thickness*2]);
+
+      translate([side_margin, 0, 0])
+      labels(back_denominators, inc(back_widths,bit_extra_space),
+        text_size=text_size, text_font=text_font,
+        text_offset=[0,-text_size/4], halign="center", valign="top",
+        plate_size=[usable_w , label_height, label_thickness*2]);
+
+      // plate is horizontally aligned with "back label window"
+      translate([back_label_side_margin, 0, 0]) 
+      cube([full_w - (back_label_side_margin * 2), label_height, label_thickness*2]);
+    }
+
+    // front row label
+    translate([left_start, -42 - label_height - 4, 0])
+    union() {
+      // labels is horizontally aligned with "front drills"
+      translate([side_margin, 0, 0])
+      labels(front_numerators, inc(front_widths,bit_extra_space),
+        text_size=text_size, text_offset=[0,+text_size/4], halign="center", valign="baseline",
+        plate_size=[usable_w , label_height, label_thickness*2]);
+
+      translate([side_margin, 0, 0])
+      labels(front_denominators, inc(front_widths,bit_extra_space),
+        text_size=text_size, text_offset=[0,-text_size/4], halign="center", valign="top",
+        plate_size=[usable_w , label_height, label_thickness*2]);
+
+      // plate is horizontally aligned with "front label window"
+      translate([label_side_margin, 0, 0]) 
+      cube([full_w - (label_side_margin * 2), label_height, label_thickness*2]);
+    }
   }
 }
 
@@ -109,17 +107,14 @@ function inc(v, a=.6) = [for (i = v) i+a ];
 // inches to mm
 function in(v) = v * 25.4;
 
-function _sum(v, _i, _acc) = (_i == len(v)) ? _acc : _sum(v, _i+1, _acc + v[_i]);
+function _sum(v, i, r) = (i == len(v)) ? r : _sum(v, i+1, r + v[i]);
 function sum(v) = _sum(v, 0, 0);
 
-function _hcenter(v, n, pad, _i, _acc) = (_i == n) ? (_acc + pad/2 + v[_i]/2) : _hcenter(v, n, pad, _i+1, _acc + pad + v[_i]);
+function _hcenter(v, n, pad, i, r) = (i == n) ? (r + pad/2 + v[i]/2) : _hcenter(v, n, pad, i+1, r + pad + v[i]);
 function hcenter(v, n, pad=0) = _hcenter(v, n, pad, 0, 0);
-function hcenters(v, pad=0) = [for (n=[0:len(v)-1]) _hcenter(v, n, pad)];
+function hcenters(v, pad=0) = [for (n=[0:len(v)-1]) _hcenter(v, n, pad, 0, 0)];
 
-// function hcenter(v, i=0) = i==0 ? (pad + v[0]/2) : (hcenter(v, i-1, pad) + v[i-1]/2 + pad + v[i]/2);
-// function centers(v, pad=0) = [for (i=[0:len(v)-1]) hcenter()];
-
-function imperial_widths(numerators=[],denominators=[]) = [for (i=[0:len(numerators)-1]) in(numerators[i] / denominators[i])];
+function imperial_widths(numerators=[], denominators=[]) = [for (i=[0:len(numerators)-1]) in(numerators[i] / denominators[i])];
 
 module drills(widths=[], width = 100) {
   leftover = width - sum(widths);
