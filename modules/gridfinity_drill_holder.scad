@@ -108,12 +108,18 @@ function inc(v, a=.6) = [for (i = v) i+a ];
 // inches to mm
 function in(v) = v * 25.4;
 
-function _sum(v, i, r) = (i == len(v)) ? r : _sum(v, i+1, r + v[i]);
-function sum(v) = _sum(v, 0, 0);
+function sum(v, i=0, r=0) = i < len(v) ? sum(v, i+1, v[i] + r) : r;
 
-function _hcenter(v, n, pad, i, r) = (i == n) ? (r + pad/2 + v[i]/2) : _hcenter(v, n, pad, i+1, r + pad + v[i]);
-function hcenter(v, n, pad=0) = _hcenter(v, n, pad, 0, 0);
-function hcenters(v, pad=0) = [for (n=[0:len(v)-1]) _hcenter(v, n, pad, 0, 0)];
+// hcenter, returns center of the "v" width selected by "n"
+// |---VV.VV---.---V.V---.---VVV.VVV---|
+//      n=0        n=1         n=2
+// for index < n, full v width and pad are added to r, like ".---VV.VV---."
+// for index == n (the selected one) half of width and pad are added, like ".---VV."
+
+function hcenter(v, n, pad, i=0, r=0) = (i < n) ? hcenter(v, n, pad, i+1, r + pad + v[i]) : (r + pad/2 + v[i]/2);
+
+// hcenters, converts a widths array into a centers array
+function hcenters(v, pad=0) = [for (n=[0:len(v)-1]) hcenter(v, n, pad)];
 
 function imperial_widths(numerators=[], denominators=[]) = [for (i=[0:len(numerators)-1]) in(numerators[i] / denominators[i])];
 
