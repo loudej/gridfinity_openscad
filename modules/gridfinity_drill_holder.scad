@@ -132,7 +132,7 @@ module drills(widths=[], width = 100) {
   }
 }
 
-module labels(numerators=[], widths=[], 
+module labels(numbers=[], widths=[], 
   text_size=4.5, text_font="Overpass:style=SemiBold", 
   halign="center", valign="center", text_offset=[0,0],
   plate_size=[100, 12.7, 1]) {
@@ -145,10 +145,9 @@ module labels(numerators=[], widths=[],
       translate([text_offset[0],text_offset[1],0])
       translate([centers[i],plate_size[1]/2,plate_size[2]])
       linear_extrude(0.6)
-      text(str(numerators[i]), size=text_size, halign=halign, valign=valign, font="Overpass:style=SemiBold");
+      text(str(numbers[i]), size=text_size, halign=halign, valign=valign, font=text_font);
 
       translate([centers[i],plate_size[1]/2,plate_size[2]])
-      //rotate([0, 0, 22.5])
       translate([-text_size/2, -0.3, 0])
       cube([text_size, 0.6, 0.6]);
     }
